@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
       url(r'^home', 'app.views.primerRegistro', name='agregar_clientes'),
     url(r'^editar/primer_registro/(?P<pk>\d+)', views.PrimerRegistroEdit, name='editar_primer_registro'),
+    url(r'^editar/gastos/(?P<pk>\d+)', 'gastos.views.GastosEdit', name='editar_gastos'),
     url(r'^eliminar/(?P<pk>\d+)$', views.PrimerRegistroDelete, name='eliminar_primer_registro'),
     url(r'^clientes/', 'app.views.clientes', name='clientes'),
     url(r'^desempeno/', 'app.views.desempeno', name='desempeno'),
@@ -56,6 +57,10 @@ urlpatterns = [
 
     #asistente
     url(r'^gastos_oficina/', views.gastos_oficina, name='gastos_oficina'),
+
+    #gastos de sucursal
+     url(r'^asesor/sucursal/','gastos.views.renta', name='gasto_sucursal'),
+
 ]
 
 

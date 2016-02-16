@@ -3,12 +3,11 @@ from django.core.mail import send_mail
 from django.db.models import Q
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
-import monthdelta as monthdelta
 from .forms import PrimerRegistroFORM, SegundoRegistroForm, OrderForm, EmailOdcsForm, CargarPdfsForm,\
     PReferenciaForm,  BuscarDiaForm, PRBoleanPagoForm, OdcsPagadasForm
 from .models import PrimerRegistro, SegundoRegistro, Productos, ProductOrder, Order, RelacionP
 import json
-import datetime, timedelta
+import datetime
 from django.utils import timezone
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -129,7 +128,7 @@ def primerRegistro(request):
 
     if datos.tipo == "1":
         sucursal = datos.sucursal
-        sacar_asesor = Datos.objects.get(Q(tipo = '2')& Q(sucursal=sucursal))
+        sacar_asesor = Datos.objects.get(Q(tipo = '1')& Q(sucursal=sucursal))
         odcs = Order.objects.filter(Q(operador__username__contains=sacar_asesor.usuario))
         ordenes = Order.objects.filter(operador__username__contains=operadort)
         orden1 = Order.objects.filter(Q(orden_compra="1") & Q(operador=sacar_asesor.usuario ))

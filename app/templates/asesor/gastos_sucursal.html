@@ -1,0 +1,395 @@
+{% extends "base/base-asistente.html" %}
+{% load staticfiles %}
+    {% block css_add %}
+     {% load staticfiles %}
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+
+ {% endblock %}
+
+{% block contenido %}
+    <button class="btn btn-primary" data-toggle="modal" data-target="#bd-example-modal-lg">Agregar gastos</button>
+    <hr>
+    <div class="modal fade bd-example-modal-lg" id="bd-example-modal-lg">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="container">
+                <div class="row">
+                <div class="col-md-8 col-sm-4">
+                    <div class="text-danger "><h4 class="ma">Agregar gastos.</h4></div>
+                    <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                  <div class="form-gruop row">
+                      <label class="col-sm-2 form-control-label">Sucursal:</label>
+                      <div class="col-sm-4">
+                          {{ datos.sucursal }}
+                      </div>
+                  </div>
+                  <div class="form-group  row ">
+                    <label class="col-sm-2 form-control-label">Fecha:</label>
+                    <div class="col-sm-4">{{ form.fecha }}
+                        {{ form.fecha.errors }}
+                    </div>
+                  </div>
+                  <div class="form-group  row ">
+                    <label class="col-sm-2 form-control-label">Sucursal:</label>
+                    <div class="col-sm-4">{{ form.nombre }}
+                        {{ form.nombre.errors }}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 form-control-label">Renta:</label>
+                    <div class="col-sm-4">{{ form.renta }}
+                    {{ form.renta.errors }}</div>
+                  </div>
+                  <div class="form-group  row">
+                    <label class="col-sm-2 form-control-label">Nomina:</label>
+                    <div class="col-sm-6">{{ form.nomina }}
+                    {{ form.nomina.errors }}</div>
+                  </div>
+                  <div class="form-group  row">
+                    <label class="col-sm-2 form-control-label">Telefono/internet:</label>
+                    <div class="col-sm-6">{{ form.telefono_internet }}
+                    {{ form.numero.errors }}</div>
+                  </div>
+                  <div class="form-group  row">
+                    <label class="col-sm-2 form-control-label">Agua/luz</label>
+                    <div class="col-sm-6">{{ form.agua_luz }}
+                    {{ form.colonia_o_fraccionamiento.errors }}</div>
+                  </div>
+                  <div class="form-group  row">
+                    <label class="col-sm-2 form-control-label">Papeleria:</label>
+                    <div class="col-sm-6">{{ form.papeleria }}
+                    {{ form.papeleria.errors }}</div>
+                  </div>
+                  <div class="form-group  row">
+                    <label class="col-sm-2 form-control-label">Varios:</label>
+                    <div class="col-sm-6">{{ form.varios }}
+                    {{ form.varios.errors }}</div>
+                   </div>
+
+                        <br>
+
+                <div class="form-group row">
+                    <div class="col-sm-offset-2 col-sm-4">
+                      <button type="submit" class="btn btn-success">Guardar</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+                        <br>
+            </form>
+                </div>
+                <div class="col-md-2 col-sm-2"></div>
+            </div>
+
+        </div>
+    </div>
+  </div>
+  </div>
+
+
+        {% for fua in sucursal %}
+
+            <div class="panel-group" id="accordionx" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo{{ fua.id }}">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{ fua.id }}" aria-expanded="false" aria-controls="collapseTwo{{ fua.id }}">{{ fua.nombre}}</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo{{ fua.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{ fua.id }}">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered display" id="example">
+                                    <thead class="color1">
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Sucursal</th>
+                                            <th>Renta</th>
+                                            <th>Nomina</th>
+                                            <th>Telefono/Internet</th>
+                                            <th>Agua/Luz</th>
+                                            <th>Papeleria</th>
+                                            <th>Varios</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for foo in gastosEnero %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosFebrero %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                     <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosMarzo%}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                     <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosAbril %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosMayo %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosJunio %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosJulio %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosAgosto %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosSeptiembre %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosOctubre %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in Noviembre %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                        {% for foo in gastosDiciembre %}
+                                                     <tr>
+                                                         <td>{{ foo.fecha }}</td>
+                                                         <td>{{ foo.nombre }}</td>
+                                                         <td>{{ foo.renta }}</td>
+                                                         <td>{{ foo.nomina }}</td>
+                                                         <td>{{ foo.telefono_internet }}</td>
+                                                         <td>{{ foo.agua_luz }}</td>
+                                                         <td>{{ foo.papeleria }}</td>
+                                                         <td>{{ foo.varios }}</td>
+                                                         <td>
+                                                            <div class="dropdown">
+                                                              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                Acciones <span class="caret"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                  <li><a  href="{% url 'editar_gastos' foo.pk %}">Editar</a></li>
+                                                              </ul>
+                                                            </div>
+                                                         </td>
+                                                    </tr>
+                                                 {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    {% endfor %}
+
+
+
+
+
+{% endblock %}
